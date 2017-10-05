@@ -23,12 +23,13 @@ build:
 requirements:
     build:
         - cmake  # [win]
-        - msinttypes  # [win and vc<14]
         - bison  # [unix]
         - flex  # [unix]
+        - {{ compiler('c') }}
+    host:
+        - msinttypes  # [win and vc<14]
         - zlib
         - jpeg
-        - {{ compiler('c') }}
     # run:
         # zlib removed here because zlib package has run_exports for itself
         #    https://github.com/AnacondaRecipes/hdf5-feedstock/pull/1/files#diff-e178b687b10a71a3348107ae3154e44cR31
