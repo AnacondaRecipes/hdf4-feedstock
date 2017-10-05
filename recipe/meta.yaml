@@ -20,12 +20,13 @@ build:
 requirements:
     build:
         - cmake  # [win]
-        - msinttypes  # [win and vc<14]
         - bison  # [unix]
         - flex  # [unix]
+        - {{ compiler('c') }}
+    host:
+        - msinttypes  # [win and vc<14]
         - zlib
         - jpeg
-        - {{ compiler('c') }}
 
 test:
   commands:
