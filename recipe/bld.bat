@@ -6,14 +6,12 @@ mkdir build_dir
 cd build_dir
 
 :: Configure step.
-cmake -G "NMake Makefiles" ^
+cmake -G "%CMAKE_GENERATOR%" ^
       -D CMAKE_BUILD_TYPE=Release ^
-      -D HDF4_BUILD_HL_LIB=ON ^
+      :: -D HDF4_BUILD_HL_LIB=ON ^
       -D CMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
-      -D ZLIB_LIBRARY=%LIBRARY_LIB%\zlibstatic.lib ^
-      -D ZLIB_INCLUDE_DIR=%LIBRARY_INC% ^
-      -D JPEG_LIBRARY=%LIBRARY_LIB%\jpeg.lib ^
-      -D JPEG_INCLUDE_DIR=%LIBRARY_INC% ^
+      -D ZLIB_DIR=%LIBRARY_PREFIX% ^
+      -D JPEG_DIR=%LIBRARY_PREFIX% ^
       -D HDF4_BUILD_FORTRAN=NO ^
       -D HDF4_ENABLE_NETCDF=NO ^
       -D BUILD_SHARED_LIBS:BOOL=ON ^
@@ -22,13 +20,13 @@ cmake -G "NMake Makefiles" ^
 if errorlevel 1 exit 1
 
 :: Build.
-nmake
+cmake --build . --config Release
 if errorlevel 1 exit 1
 
 :: Test.
-ctest
+ctest -C Release
 if errorlevel 1 exit 1
 
 :: Install.
-nmake install
+cmake --build . --config Release --target install
 if errorlevel 1 exit 1

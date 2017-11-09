@@ -12,9 +12,7 @@ source:
         - max_files.patch
 
 build:
-    number: 1
-    features:
-        - vc{{ vc }}  # [win]
+    number: 2
     run_exports:
         # change SONAMEs with bugfix rev.
         #    https://abi-laboratory.pro/tracker/timeline/hdf5/
@@ -26,6 +24,7 @@ requirements:
         - bison  # [unix]
         - flex  # [unix]
         - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
     host:
         - msinttypes  # [win and vc<14]
         - zlib
