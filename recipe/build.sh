@@ -1,10 +1,6 @@
 #!/bin/bash
 
-export CFLAGS="$CFLAGS -I$PREFIX/include -L$PREFIX/lib"
-export CXXFLAGS="$CXXFLAGS -I$PREFIX/include -L$PREFIX/lib"
-export LDFLAGS="$LDFLAGS -L$PREFIX/lib -Wl,-rpath,${PREFIX}/lib"
-
-chmod +x configure
+autoreconf -vfi
 
 # The --enable-silent-rules is needed because Travis CI dies on the long output from this build.
 ./configure --prefix=${PREFIX}\

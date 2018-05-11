@@ -12,7 +12,7 @@ source:
         - max_files.patch
 
 build:
-    number: 2
+    number: 3
     run_exports:
         # change SONAMEs with bugfix rev.
         #    https://abi-laboratory.pro/tracker/timeline/hdf5/
@@ -20,9 +20,14 @@ build:
 
 requirements:
     build:
-        - cmake  # [win]
-        - bison  # [unix]
-        - flex  # [unix]
+        - cmake       # [win]
+        - bison       # [unix]
+        - flex        # [unix]
+        - make        # [unix]
+        # To build this on ppc64le we need to run autoreconf so:
+        - libtool     # [unix]
+        - automake    # [unix]
+        - autoconf    # [unix]
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
     host:
