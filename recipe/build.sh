@@ -3,6 +3,20 @@
 autoreconf -vfi
 
 # The --enable-silent-rules is needed because Travis CI dies on the long output from this build.
+
+if [[ $(uname -m) == "aarch64" ]]; then
+./configure --prefix=${PREFIX}\
+            --host=aarch64-linux-gnu \
+            --build=aarch64-linux-gnu \
+            --enable-linux-lfs \
+            --enable-silent-rules \
+            --enable-shared \
+            --with-ssl \
+            --with-zlib \
+            --with-jpeg \
+            --disable-netcdf \
+            --disable-fortran
+else
 ./configure --prefix=${PREFIX}\
             --host=$HOST \
             --enable-linux-lfs \
@@ -13,6 +27,10 @@ autoreconf -vfi
             --with-jpeg \
             --disable-netcdf \
             --disable-fortran
+fi
+
+# make sure that linux aarch64 configuration is defined ...
+cp $RECIPE_DIR/hdfi.h hdf/src/hdfi.h
 
 make
 make install
