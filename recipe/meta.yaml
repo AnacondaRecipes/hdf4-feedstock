@@ -26,6 +26,7 @@ requirements:
         - make        # [unix]
         # To build this on ppc64le we need to run autoreconf so:
         - libtool     # [unix]
+        - gnuconfig   # [unix]
         - automake    # [unix]
         - autoconf    # [unix]
         - {{ compiler('c') }}
