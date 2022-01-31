@@ -31,7 +31,9 @@ requirements:
         - autoconf    # [unix]
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-    host:
+        - patch       # [not win]
+        - m2-patch    # [win]
+     host:
         - msinttypes  # [win and vc<14]
         - zlib
         - jpeg
