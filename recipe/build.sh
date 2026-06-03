@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# export CFLAGS="${CFLAGS} -Wno-error=implicit-function-declaration -Wno-error=incompatible-function-pointer-types -Wno-error=incompatible-pointer-types"
 autoreconf -vfi
 
 # The --enable-silent-rules is needed because Travis CI dies on the long output from this build.

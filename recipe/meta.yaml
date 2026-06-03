@@ -6,13 +6,13 @@ package:
 
 source:
     fn: hdf-{{ version }}.tar.bz2
-    url: http://www.hdfgroup.org/ftp/HDF/HDF_Current/src/hdf-{{ version }}.tar.bz2
+    url: https://support.hdfgroup.org/ftp/HDF/releases/HDF{{ version }}/src/hdf-{{ version }}.tar.bz2
     sha256: 55d3a42313bda0aba7b0463687caf819a970e0ba206f5ed2c23724f80d2ae0f3
     patches:
         - max_files.patch
 
 build:
-    number: 3
+    number: 4
     run_exports:
         # change SONAMEs with bugfix rev.
         #    https://abi-laboratory.pro/tracker/timeline/hdf5/
@@ -31,21 +31,20 @@ requirements:
         - autoconf    # [unix]
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - patch       # [not win]
-        - m2-patch    # [win]
     host:
         - msinttypes  # [win and vc<14]
-        - zlib
-        - jpeg
-    # run:
+        - zlib {{ zlib }}
+        - libjpeg-turbo {{ libjpeg_turbo }}
+    run:
         # zlib removed here because zlib package has run_exports for itself
         #    https://github.com/AnacondaRecipes/hdf5-feedstock/pull/1/files#diff-e178b687b10a71a3348107ae3154e44cR31
         # this req isn't actually necessary, as run_exports will add it.  Left here for reference.
-        # - zlib 1.2.*
+        - zlib
         # jpeg removed here because package has run_exports for itself
         #    https://github.com/AnacondaRecipes/jpeg-feedstock/pull/1
         # this req isn't actually necessary, as run_exports will add it.  Left here for reference.
         #- jpeg 9*
+        - libjpeg-turbo
 
 test:
     commands:
@@ -64,9 +63,14 @@ test:
 about:
     home: http://www.hdfgroup.org/HDF4/
     license: BSD 3-Clause
-    summary: 'Library and multi-object file format for storing and managing data between machines.'
+    summary: Library and multi-object file format for storing and managing data between machines.
+    description: |
+        HDF4 is a library and multi-object file format for storing and managing data between machines. 
+        There are two versions of HDF technologies that are completely different: HDF4 and HDF5. HDF4 is the first HDF format.
     license_family: BSD
     license_file: COPYING
+    doc_url: https://support.hdfgroup.org/release4/doc/index.html
+    dev_url: https://github.com/HDFGroup/hdf4
 
 extra:
     recipe-maintainers:
