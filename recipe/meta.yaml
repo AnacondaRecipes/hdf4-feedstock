@@ -8,8 +8,9 @@ source:
     fn: hdf-{{ version }}.tar.bz2
     url: https://support.hdfgroup.org/ftp/HDF/releases/HDF{{ version }}/src/hdf-{{ version }}.tar.bz2
     sha256: 55d3a42313bda0aba7b0463687caf819a970e0ba206f5ed2c23724f80d2ae0f3
-    patches:
-        - max_files.patch
+    patches:                # [unix]
+        - max_files.patch   # [unix]
+        - disable_xdr.patch # [unix]
 
 build:
     number: 4
@@ -35,16 +36,16 @@ requirements:
         - msinttypes  # [win and vc<14]
         - zlib {{ zlib }}
         - libjpeg-turbo {{ libjpeg_turbo }}
+        - libtirpc {{ libtirpc }}  # [unix]
     run:
         # zlib removed here because zlib package has run_exports for itself
         #    https://github.com/AnacondaRecipes/hdf5-feedstock/pull/1/files#diff-e178b687b10a71a3348107ae3154e44cR31
         # this req isn't actually necessary, as run_exports will add it.  Left here for reference.
-        - zlib
-        # jpeg removed here because package has run_exports for itself
-        #    https://github.com/AnacondaRecipes/jpeg-feedstock/pull/1
+        # - zlib
+        # libjpeg-turbo removed here because package has run_exports for itself
+        #    https://github.com/AnacondaRecipes/libjpeg-turbo-feedstock/blob/e5541bfba61b85797f75d0da807674354363fa45/recipe/meta.yaml#L15
         # this req isn't actually necessary, as run_exports will add it.  Left here for reference.
-        #- jpeg 9*
-        - libjpeg-turbo
+        # - libjpeg-turbo
 
 test:
     commands:
