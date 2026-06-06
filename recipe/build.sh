@@ -1,5 +1,16 @@
 #!/bin/bash
 
+export CFLAGS="${CFLAGS} -Wno-error=implicit-function-declaration \
+                        -Wno-error=incompatible-pointer-types \
+                        -Wno-error=implicit-int"
+if [[ "$(uname)" == "Linux" ]]; then
+  export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include/tirpc"
+  export LDFLAGS="${LDFLAGS} -ltirpc"
+fi
+if [[ "$(uname)" == "Darwin" ]]; then
+  export LDFLAGS="${LDFLAGS} -Wl,-flat_namespace -Wl,-undefined,suppress"
+fi
+
 autoreconf -vfi
 
 # The --enable-silent-rules is needed because Travis CI dies on the long output from this build.
@@ -8,25 +19,23 @@ if [[ $(uname -m) == "aarch64" ]]; then
 ./configure --prefix=${PREFIX}\
             --host=aarch64-linux-gnu \
             --build=aarch64-linux-gnu \
-            --enable-linux-lfs \
             --enable-silent-rules \
             --enable-shared \
-            --with-ssl \
             --with-zlib \
             --with-jpeg \
             --disable-netcdf \
-            --disable-fortran
+            --disable-hdf4-xdr \
+            --disable-fortran || (cat config.log; exit 1)
 else
 ./configure --prefix=${PREFIX}\
             --host=$HOST \
-            --enable-linux-lfs \
             --enable-silent-rules \
             --enable-shared \
-            --with-ssl \
             --with-zlib \
             --with-jpeg \
             --disable-netcdf \
-            --disable-fortran
+            --disable-hdf4-xdr \
+            --disable-fortran || (cat config.log; exit 1)
 fi
 
 # make sure that linux aarch64 configuration is defined ...
