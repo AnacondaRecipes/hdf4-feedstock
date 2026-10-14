@@ -8,10 +8,18 @@ cd build_dir
 :: Moving changes from patch here to avoid errors with patching on windows. 
 :: Files have a different line ending and patch doesn't work well with that.
 python -c "
-content = open('hdf/src/hlimits.h').read()
+import os
+p = os.path.join(os.environ['SRC_DIR'], 'hdf', 'src', 'hlimits.h')
+content = open(p).read()
 content = content.replace('#   define MAX_FILE   32', '#   define MAX_FILE   4096')
-open('hdf/src/hlimits.h', 'w').write(content)
+open(p, 'w').write(content)
 "
+
+:: Overwrite hdfi.h with the recipe copy (same workaround build.sh applies on unix).
+:: The upstream header does not detect Windows ARM64 (_M_ARM64), which leaves
+:: GOT_MACHINE undefined and breaks the machine typedefs on that platform.
+copy /Y "%RECIPE_DIR%\hdfi.h" "%SRC_DIR%\hdf\src\hdfi.h"
+if errorlevel 1 exit 1
 
 :: Configure step.
 cmake -G "%CMAKE_GENERATOR%" ^
